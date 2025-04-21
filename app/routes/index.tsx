@@ -5,6 +5,12 @@ import { getHeaders } from "@tanstack/react-start/server"
 import { z } from "zod"
 import { loggingMiddleware } from "~/loggingMiddleware"
 
+// Route that serves html for "Home" component.
+export const Route = createFileRoute("/")({
+  component: Home,
+  loader: async () => await getCount(),
+})
+
 const filePath = "count.txt"
 
 const UpdateCountInput = z.object({
@@ -22,6 +28,7 @@ async function readCount() {
 // Attempted static server function... seems half-baked on TanStack's part
 //
 //
+
 // const getBuildTimeStaticServerFn = createServerFn({ type: 'static' }).handler(async () => {
 //   return new Date().toLocaleString('en-US', {
 //     weekday: 'long',
@@ -70,12 +77,6 @@ const updateCount = createServerFn({ method: "POST" })
     const count = await readCount()
     await fs.promises.writeFile(filePath, `${count + data.count}`)
   })
-
-// Route that serves html for "Home" component.
-export const Route = createFileRoute("/")({
-  component: Home,
-  loader: async () => await getCount(),
-})
 
 // React component for this page. Notice this isn't exported.
 function Home() {
