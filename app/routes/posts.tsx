@@ -1,17 +1,18 @@
-import * as fs from "node:fs"
-import { createFileRoute, useRouter } from "@tanstack/react-router"
-import { createServerFn } from "@tanstack/react-start"
-import { getHeaders } from "@tanstack/react-start/server"
-import { z } from "zod"
-import { loggingMiddleware } from "~/loggingMiddleware"
+import { createFileRoute, Outlet, useRouter } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { getHeaders } from '@tanstack/react-start/server'
+import * as fs from 'node:fs'
+import { z } from 'zod'
+import { Button } from '~/components/shadcn-ui/button'
+import { loggingMiddleware } from '~/loggingMiddleware'
 
 // Route that serves html for "Home" component.
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/posts')({
   component: Home,
   loader: async () => await getCount(),
 })
 
-const filePath = "count.txt"
+const filePath = 'count.txt'
 
 const UpdateCountInput = z.object({
   count: z.number(),
@@ -21,7 +22,7 @@ const UpdateCountInput = z.object({
 // Helper for backend behavior. How would you use this in the Home component below?
 async function readCount() {
   return parseInt(
-    await fs.promises.readFile(filePath, "utf-8").catch(() => "0"),
+    await fs.promises.readFile(filePath, 'utf-8').catch(() => '0'),
   )
 }
 
@@ -43,14 +44,14 @@ async function readCount() {
 
 // Endpoint on server
 const getCount = createServerFn({
-  method: "GET",
+  method: 'GET',
 }).handler(() => {
   console.log(getHeaders())
   return readCount()
 })
 
 // Endpoint on server
-const updateCount = createServerFn({ method: "POST" })
+const updateCount = createServerFn({ method: 'POST' })
   .validator((countInput: unknown) => {
     const parsed = UpdateCountInput.safeParse(countInput)
     if (!parsed.success) {
@@ -68,7 +69,7 @@ const updateCount = createServerFn({ method: "POST" })
       //   details: parsed.error.flatten(),
       // };
 
-      throw new Error("invalid input.")
+      throw new Error('invalid input.')
     }
     return parsed.data
   })
@@ -85,8 +86,8 @@ function Home() {
 
   return (
     <>
-      <button
-        type="button"
+      <Button
+        variant="secondary"
         onClick={() => {
           updateCount({ data: { count: 1, time: Date.now() } }).then(() => {
             // The .invalidate method in the context of a router is used to invalidate route matches
@@ -101,7 +102,8 @@ function Home() {
         }}
       >
         Add 1 to {state}?
-      </button>
+      </Button>
+      <Outlet />
     </>
   )
 }

@@ -1,24 +1,32 @@
-import type { ReactNode } from "react"
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
 import {
-  Outlet,
   createRootRoute,
   HeadContent,
+  Outlet,
   Scripts,
-} from "@tanstack/react-router"
+} from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import type { ReactNode } from 'react'
+
+import appCss from '~/styles/global.css?url'
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        charSet: "utf-8",
+        charSet: 'utf-8',
       },
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
       },
       {
-        title: "TanStack Start Starter",
+        title: 'TanStack Start Starter',
+      },
+    ],
+    links: [
+      {
+        rel: 'stylesheet',
+        href: appCss,
       },
     ],
   }),
@@ -41,6 +49,9 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <HeadContent />
       </head>
       <body>
+        <h1 className="text-3xl font-bold underline decoration-amber-300">
+          Hello world!
+        </h1>
         {children}
         <Scripts />
       </body>
