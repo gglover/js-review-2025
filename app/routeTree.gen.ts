@@ -11,29 +11,36 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as PostsImport } from './routes/posts'
+import { Route as IndexImport } from './routes/index'
+import { Route as ProfileHandleImport } from './routes/profile/$handle'
 import { Route as PostsCreateImport } from './routes/posts/create'
 import { Route as PostsPostIdImport } from './routes/posts/$postId'
 import { Route as PostsPostIdEditImport } from './routes/posts/$postId.edit'
 
 // Create/Update Routes
 
-const PostsRoute = PostsImport.update({
-  id: '/posts',
-  path: '/posts',
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileHandleRoute = ProfileHandleImport.update({
+  id: '/profile/$handle',
+  path: '/profile/$handle',
   getParentRoute: () => rootRoute,
 } as any)
 
 const PostsCreateRoute = PostsCreateImport.update({
-  id: '/create',
-  path: '/create',
-  getParentRoute: () => PostsRoute,
+  id: '/posts/create',
+  path: '/posts/create',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const PostsPostIdRoute = PostsPostIdImport.update({
-  id: '/$postId',
-  path: '/$postId',
-  getParentRoute: () => PostsRoute,
+  id: '/posts/$postId',
+  path: '/posts/$postId',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const PostsPostIdEditRoute = PostsPostIdEditImport.update({
@@ -46,26 +53,33 @@ const PostsPostIdEditRoute = PostsPostIdEditImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/posts': {
-      id: '/posts'
-      path: '/posts'
-      fullPath: '/posts'
-      preLoaderRoute: typeof PostsImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/posts/$postId': {
       id: '/posts/$postId'
-      path: '/$postId'
+      path: '/posts/$postId'
       fullPath: '/posts/$postId'
       preLoaderRoute: typeof PostsPostIdImport
-      parentRoute: typeof PostsImport
+      parentRoute: typeof rootRoute
     }
     '/posts/create': {
       id: '/posts/create'
-      path: '/create'
+      path: '/posts/create'
       fullPath: '/posts/create'
       preLoaderRoute: typeof PostsCreateImport
-      parentRoute: typeof PostsImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/$handle': {
+      id: '/profile/$handle'
+      path: '/profile/$handle'
+      fullPath: '/profile/$handle'
+      preLoaderRoute: typeof ProfileHandleImport
+      parentRoute: typeof rootRoute
     }
     '/posts/$postId/edit': {
       id: '/posts/$postId/edit'
@@ -91,64 +105,68 @@ const PostsPostIdRouteWithChildren = PostsPostIdRoute._addFileChildren(
   PostsPostIdRouteChildren,
 )
 
-interface PostsRouteChildren {
-  PostsPostIdRoute: typeof PostsPostIdRouteWithChildren
-  PostsCreateRoute: typeof PostsCreateRoute
-}
-
-const PostsRouteChildren: PostsRouteChildren = {
-  PostsPostIdRoute: PostsPostIdRouteWithChildren,
-  PostsCreateRoute: PostsCreateRoute,
-}
-
-const PostsRouteWithChildren = PostsRoute._addFileChildren(PostsRouteChildren)
-
 export interface FileRoutesByFullPath {
-  '/posts': typeof PostsRouteWithChildren
+  '/': typeof IndexRoute
   '/posts/$postId': typeof PostsPostIdRouteWithChildren
   '/posts/create': typeof PostsCreateRoute
+  '/profile/$handle': typeof ProfileHandleRoute
   '/posts/$postId/edit': typeof PostsPostIdEditRoute
 }
 
 export interface FileRoutesByTo {
-  '/posts': typeof PostsRouteWithChildren
+  '/': typeof IndexRoute
   '/posts/$postId': typeof PostsPostIdRouteWithChildren
   '/posts/create': typeof PostsCreateRoute
+  '/profile/$handle': typeof ProfileHandleRoute
   '/posts/$postId/edit': typeof PostsPostIdEditRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/posts': typeof PostsRouteWithChildren
+  '/': typeof IndexRoute
   '/posts/$postId': typeof PostsPostIdRouteWithChildren
   '/posts/create': typeof PostsCreateRoute
+  '/profile/$handle': typeof ProfileHandleRoute
   '/posts/$postId/edit': typeof PostsPostIdEditRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/posts'
+    | '/'
     | '/posts/$postId'
     | '/posts/create'
+    | '/profile/$handle'
     | '/posts/$postId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/posts' | '/posts/$postId' | '/posts/create' | '/posts/$postId/edit'
-  id:
-    | '__root__'
-    | '/posts'
+  to:
+    | '/'
     | '/posts/$postId'
     | '/posts/create'
+    | '/profile/$handle'
+    | '/posts/$postId/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/posts/$postId'
+    | '/posts/create'
+    | '/profile/$handle'
     | '/posts/$postId/edit'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  PostsRoute: typeof PostsRouteWithChildren
+  IndexRoute: typeof IndexRoute
+  PostsPostIdRoute: typeof PostsPostIdRouteWithChildren
+  PostsCreateRoute: typeof PostsCreateRoute
+  ProfileHandleRoute: typeof ProfileHandleRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  PostsRoute: PostsRouteWithChildren,
+  IndexRoute: IndexRoute,
+  PostsPostIdRoute: PostsPostIdRouteWithChildren,
+  PostsCreateRoute: PostsCreateRoute,
+  ProfileHandleRoute: ProfileHandleRoute,
 }
 
 export const routeTree = rootRoute
@@ -161,26 +179,26 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/posts"
+        "/",
+        "/posts/$postId",
+        "/posts/create",
+        "/profile/$handle"
       ]
     },
-    "/posts": {
-      "filePath": "posts.tsx",
-      "children": [
-        "/posts/$postId",
-        "/posts/create"
-      ]
+    "/": {
+      "filePath": "index.tsx"
     },
     "/posts/$postId": {
       "filePath": "posts/$postId.tsx",
-      "parent": "/posts",
       "children": [
         "/posts/$postId/edit"
       ]
     },
     "/posts/create": {
-      "filePath": "posts/create.tsx",
-      "parent": "/posts"
+      "filePath": "posts/create.tsx"
+    },
+    "/profile/$handle": {
+      "filePath": "profile/$handle.tsx"
     },
     "/posts/$postId/edit": {
       "filePath": "posts/$postId.edit.tsx",

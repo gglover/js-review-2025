@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import type { ReactNode } from 'react'
+import { Navigation } from '~/components/navigation'
 
 import appCss from '~/styles/global.css?url'
 
@@ -36,7 +37,12 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <main className="max-w-l mt-8 flex justify-center gap-4">
+        <Navigation />
+        <div className="w-sm">
+          <Outlet />
+        </div>
+      </main>
       <TanStackRouterDevtools />
     </RootDocument>
   )
@@ -49,9 +55,6 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <HeadContent />
       </head>
       <body>
-        <h1 className="text-3xl font-bold underline decoration-amber-300">
-          Hello world!
-        </h1>
         {children}
         <Scripts />
       </body>

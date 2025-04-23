@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, useRouter } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getHeaders } from '@tanstack/react-start/server'
 import * as fs from 'node:fs'
@@ -7,7 +7,7 @@ import { Button } from '~/components/shadcn-ui/button'
 import { loggingMiddleware } from '~/loggingMiddleware'
 
 // Route that serves html for "Home" component.
-export const Route = createFileRoute('/posts')({
+export const Route = createFileRoute('/')({
   component: Home,
   loader: async () => await getCount(),
 })
@@ -103,7 +103,6 @@ function Home() {
       >
         Add 1 to {state}?
       </Button>
-      <Outlet />
     </>
   )
 }
