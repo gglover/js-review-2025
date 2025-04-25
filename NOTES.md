@@ -2,7 +2,7 @@
 
 / Last 10 posts organized chronologically.
 
-/create Write a post. authN.
+/posts/create Write a post. authN.
 
 - Use a layout to render root feed below and use a modal.
 

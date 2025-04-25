@@ -11,13 +11,19 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SettingsImport } from './routes/settings'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProfileHandleImport } from './routes/profile/$handle'
-import { Route as PostsCreateImport } from './routes/posts/create'
 import { Route as PostsPostIdImport } from './routes/posts/$postId'
 import { Route as PostsPostIdEditImport } from './routes/posts/$postId.edit'
 
 // Create/Update Routes
+
+const SettingsRoute = SettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -28,12 +34,6 @@ const IndexRoute = IndexImport.update({
 const ProfileHandleRoute = ProfileHandleImport.update({
   id: '/profile/$handle',
   path: '/profile/$handle',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const PostsCreateRoute = PostsCreateImport.update({
-  id: '/posts/create',
-  path: '/posts/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,18 +60,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
     '/posts/$postId': {
       id: '/posts/$postId'
       path: '/posts/$postId'
       fullPath: '/posts/$postId'
       preLoaderRoute: typeof PostsPostIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/posts/create': {
-      id: '/posts/create'
-      path: '/posts/create'
-      fullPath: '/posts/create'
-      preLoaderRoute: typeof PostsCreateImport
       parentRoute: typeof rootRoute
     }
     '/profile/$handle': {
@@ -107,16 +107,16 @@ const PostsPostIdRouteWithChildren = PostsPostIdRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/settings': typeof SettingsRoute
   '/posts/$postId': typeof PostsPostIdRouteWithChildren
-  '/posts/create': typeof PostsCreateRoute
   '/profile/$handle': typeof ProfileHandleRoute
   '/posts/$postId/edit': typeof PostsPostIdEditRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/settings': typeof SettingsRoute
   '/posts/$postId': typeof PostsPostIdRouteWithChildren
-  '/posts/create': typeof PostsCreateRoute
   '/profile/$handle': typeof ProfileHandleRoute
   '/posts/$postId/edit': typeof PostsPostIdEditRoute
 }
@@ -124,8 +124,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/settings': typeof SettingsRoute
   '/posts/$postId': typeof PostsPostIdRouteWithChildren
-  '/posts/create': typeof PostsCreateRoute
   '/profile/$handle': typeof ProfileHandleRoute
   '/posts/$postId/edit': typeof PostsPostIdEditRoute
 }
@@ -134,22 +134,22 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/settings'
     | '/posts/$postId'
-    | '/posts/create'
     | '/profile/$handle'
     | '/posts/$postId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/settings'
     | '/posts/$postId'
-    | '/posts/create'
     | '/profile/$handle'
     | '/posts/$postId/edit'
   id:
     | '__root__'
     | '/'
+    | '/settings'
     | '/posts/$postId'
-    | '/posts/create'
     | '/profile/$handle'
     | '/posts/$postId/edit'
   fileRoutesById: FileRoutesById
@@ -157,15 +157,15 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SettingsRoute: typeof SettingsRoute
   PostsPostIdRoute: typeof PostsPostIdRouteWithChildren
-  PostsCreateRoute: typeof PostsCreateRoute
   ProfileHandleRoute: typeof ProfileHandleRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SettingsRoute: SettingsRoute,
   PostsPostIdRoute: PostsPostIdRouteWithChildren,
-  PostsCreateRoute: PostsCreateRoute,
   ProfileHandleRoute: ProfileHandleRoute,
 }
 
@@ -180,22 +180,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/settings",
         "/posts/$postId",
-        "/posts/create",
         "/profile/$handle"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/settings": {
+      "filePath": "settings.tsx"
+    },
     "/posts/$postId": {
       "filePath": "posts/$postId.tsx",
       "children": [
         "/posts/$postId/edit"
       ]
-    },
-    "/posts/create": {
-      "filePath": "posts/create.tsx"
     },
     "/profile/$handle": {
       "filePath": "profile/$handle.tsx"

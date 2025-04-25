@@ -1,12 +1,13 @@
 import { Link } from '@tanstack/react-router'
 import { CircleUser, Cog, House } from 'lucide-react'
 import Logo from '~/assets/logo.svg'
+import { CreatePostButton } from './create-post-button'
 
 export function Navigation() {
   return (
-    <nav role="navigation" className="p-4">
-      <h1 className="mb-2 font-serif">
-        <img src={Logo} alt={'gus social'} className="w-24" />
+    <nav role="navigation" className="flex flex-col gap-2 p-4">
+      <h1>
+        <img src={Logo} alt={'gus social'} className="w-24 p-1" />
       </h1>
       <NavigationLink route="/" icon={<House />} text="Home" />
       <NavigationLink
@@ -15,6 +16,7 @@ export function Navigation() {
         text="Profile"
       />
       <NavigationLink route="/settings" icon={<Cog />} text="Settings" />
+      <CreatePostButton />
     </nav>
   )
 }

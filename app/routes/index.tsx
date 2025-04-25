@@ -3,7 +3,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { getHeaders } from '@tanstack/react-start/server'
 import * as fs from 'node:fs'
 import { z } from 'zod'
-import { Button } from '~/components/shadcn-ui/button'
+import { Post } from '~/components/post'
 import { loggingMiddleware } from '~/loggingMiddleware'
 
 // Route that serves html for "Home" component.
@@ -85,8 +85,8 @@ function Home() {
   const state = Route.useLoaderData()
 
   return (
-    <>
-      <Button
+    <div className="flex flex-col gap-1.5">
+      {/* <Button
         variant="secondary"
         onClick={() => {
           updateCount({ data: { count: 1, time: Date.now() } }).then(() => {
@@ -102,7 +102,14 @@ function Home() {
         }}
       >
         Add 1 to {state}?
-      </Button>
-    </>
+      </Button> */}
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+    </div>
   )
 }

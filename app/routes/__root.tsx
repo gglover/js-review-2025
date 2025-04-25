@@ -5,10 +5,14 @@ import {
   Scripts,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { ConvexReactClient } from 'convex/react'
 import type { ReactNode } from 'react'
 import { Navigation } from '~/components/navigation'
 
 import appCss from '~/styles/global.css?url'
+
+const deploymentURL = import.meta.env.VITE_CONVEX_URL
+const convex = new ConvexReactClient(deploymentURL)
 
 export const Route = createRootRoute({
   head: () => ({

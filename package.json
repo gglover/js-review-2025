@@ -14,7 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.7",
+    "@radix-ui/react-dialog": "^1.1.11",
     "@radix-ui/react-slot": "^1.2.0",
+    "@radix-ui/react-tooltip": "^1.2.4",
     "@tailwindcss/postcss": "^4.1.4",
     "@tailwindcss/vite": "^4.1.4",
     "@tanstack/react-router": "^1.116.0",
@@ -23,6 +25,7 @@
     "@tanstack/zod-adapter": "^1.116.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "convex": "^1.23.0",
     "lucide-react": "^0.503.0",
     "postcss": "^8.5.3",
     "react": "^19.1.0",
